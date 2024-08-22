@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.PersistenceContext;
+import javax.validation.Valid;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.BeanUtils;
@@ -65,7 +66,7 @@ public class CozinhaController {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+	public Cozinha adicionar(@RequestBody @Valid Cozinha cozinha) {
 
 		try {
 
