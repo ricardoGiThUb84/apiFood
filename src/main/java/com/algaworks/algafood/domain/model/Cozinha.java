@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.algaworks.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,7 +32,8 @@ public class Cozinha {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
+
 	@NotBlank
 	@Column(nullable = false)
 	private String nome;

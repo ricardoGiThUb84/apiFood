@@ -26,6 +26,7 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
 import com.algaworks.algafood.Groups;
+import com.algaworks.algafood.core.validation.TaxaFrete;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -33,8 +34,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-
 
 @Entity
 @Data
@@ -52,7 +51,8 @@ public class Restaurante {
 	@Column(nullable = false)
 	private String nome;
 
-	@PositiveOrZero()
+//	@PositiveOrZero()
+	@TaxaFrete
 	@NotNull()
 	@Column(name = "taxa_frete", length = 30, nullable = false)
 	private BigDecimal taxaFrete;
