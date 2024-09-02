@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.algaworks.algafood.Groups;
+import com.algaworks.algafood.domain.exception.ValidacaoException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -53,6 +56,9 @@ public class RestauranteController {
 
 	@Autowired
 	private CadastroRestauranteService cadastroRestauranteService;
+
+	@Autowired
+	private SmartValidator smartValidator;
 
 	@GetMapping("/por-nome-frete")
 	public List<Restaurante> listarPorFrete(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
@@ -128,11 +134,22 @@ public class RestauranteController {
 			}
 
 			merge(restaurante, restauranteAtual, httpServletRequest);
+			valida(restauranteAtual, "restaurante");
 
 			return ResponseEntity.ok(cadastroRestauranteService.salvar(restauranteAtual));
 
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	private void valida(Restaurante restaurante, String objectName) {
+		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+		smartValidator.validate(restaurante,bindingResult);
+
+		if(bindingResult.hasErrors()){
+
+			throw new ValidacaoException(bindingResult);
 		}
 	}
 
