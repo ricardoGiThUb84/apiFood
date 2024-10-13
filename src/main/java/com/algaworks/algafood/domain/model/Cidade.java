@@ -14,6 +14,7 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
 import com.algaworks.algafood.Groups;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -34,6 +35,7 @@ public class Cidade {
 
 
     @Valid
+    @JsonIgnoreProperties(value = "nome" , allowGetters = true)
     @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
     @NotNull
     @ManyToOne

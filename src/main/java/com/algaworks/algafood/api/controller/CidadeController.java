@@ -26,6 +26,7 @@ import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 import javax.validation.Valid;
 
+
 @RestController
 @RequestMapping("/cidades")
 public class CidadeController {

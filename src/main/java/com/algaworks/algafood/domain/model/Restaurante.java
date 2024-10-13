@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import com.algaworks.algafood.Groups;
 import com.algaworks.algafood.core.validation.Multiplo;
 import com.algaworks.algafood.core.validation.TaxaFrete;
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -42,14 +44,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 public class Restaurante {
-	
-	
 
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 
 	@NotBlank()
 	@Column(nullable = false)
@@ -62,7 +61,7 @@ public class Restaurante {
 	@Column(name = "taxa_frete", length = 30, nullable = false)
 	private BigDecimal taxaFrete;
 	
-//	@JsonIgnore
+	@JsonIgnoreProperties(value = "nome", allowGetters = true)
 	@Valid
 	@ConvertGroup(from = Default.class , to = Groups.CozinhaId.class)
 	@NotNull()
@@ -77,11 +76,11 @@ public class Restaurante {
 	
 	@CreationTimestamp
 	@Column(nullable = false)
-	private LocalDateTime dataCadastro;
+	private OffsetDateTime dataCadastro;
 	
 	@UpdateTimestamp
 	@Column(nullable = false)
-	private LocalDateTime dataAtualizacao;
+	private OffsetDateTime dataAtualizacao;
 	
 	@ManyToMany
 	@JoinTable(name = "restaurante_forma_pagamento",
